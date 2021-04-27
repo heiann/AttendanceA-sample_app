@@ -1,6 +1,10 @@
 <% provide(:title, 'All Users') %>
 <h1>ユーザー一覧</h1>
 
+<div class="col-md-6 col-md-offset-1">
+  <%= link_to "ファイルを選択", class: "btn btn-block" %>
+</div>
+
 <div class="col-md-10 col-md-offset-1">
   <%= will_paginate %>
   <table class="table table-condensed table-hover" id="table-users">

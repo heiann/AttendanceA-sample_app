@@ -49,7 +49,6 @@ module SessionsHelper
   def logged_in?
     !current_user.nil?
   end
-
   # 記憶しているURL(またはデフォルトURL)にリダイレクトします。
   def redirect_back_or(default_url)
     redirect_to(session[:forwarding_url] || default_url)
