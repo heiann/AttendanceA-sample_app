@@ -1,32 +1,21 @@
 <% provide(:title, 'All Users') %>
 <h1>ユーザー一覧</h1>
 
-<div class="col-md-6 col-md-offset-1">
-  <%= link_to "ファイルを選択", class: "btn btn-block" %>
-</div>
-
-<div class="col-md-10 col-md-offset-1">
-  <%= will_paginate %>
-  <table class="table table-condensed table-hover" id="table-users">
-    <thead>
-      <tr>
-        <th><%= User.human_attribute_name :name %></th>
-        <th></th>
-      </tr>
-    </thead>
-
+ <div class="col-md-6 col-md-offset-1">
+   <%= form_with url: csv_import_users_path do |form| %>
+  　　　<%= form.file_field :file, accept: '.csv' %>
+  　　<div style = margin-top:10px ></div>
+  　　<%= form.submit "インポート"class = "btn btn-lg btn-success" %>
+  　<% end %>
+　
+ </div>
+ 　  
+ <div class="col-md-6 col-md-offset-1">
     <% @users.each do |user| %>
-      <tr>
-        <td><%= link_to user.name, user %></td>
-        <td>
-          <% if current_user.admin? && !current_user?(user) %>
-            <%= link_to "削除", user, method: :delete,
-                data: { confirm: "削除してよろしいですか？" },
-                class: "btn btn-danger" %>
-          <% end %>
-        </td>
-      </tr>
+          <li><%= link_to user.name, user %></li>
+          <div style = "margin-top: 10px"></div>
+          <li><%= link_to "削除", :users, method: :delete, class: "btn btn-primary" %></li>
+          <div style = "margin-top: 10px"></div>
+          <li><%= link_to "編集", :users, method: :edit, class: "btn btn-lg btn-primary" %></li>
     <% end %>
-  </table>
-  <%= will_paginate %>
-</div>
+ </div>

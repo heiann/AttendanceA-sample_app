@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20210427121654) do
     t.boolean "admin", default: false
     t.string "remember_digest"
     t.string "department"
-    t.datetime "basic_time", default: "2021-04-26 23:00:00"
+    t.datetime "basic_time", default: "2021-04-27 23:00:00"
     t.datetime "work_start_time"
     t.datetime "work_end_time"
     t.string "card_id"

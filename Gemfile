@@ -7,6 +7,8 @@ gem 'faker'
 gem 'bootstrap-sass'
 gem 'will_paginate' # この行を追加してください。
 gem 'bootstrap-will_paginate' # この行を追加してください。
+gem 'roo'
+gem 'activerecord-import'
 gem 'puma',         '~> 3.7'
 gem 'sass-rails',   '~> 5.0'
 gem 'uglifier',     '>= 1.3.0'

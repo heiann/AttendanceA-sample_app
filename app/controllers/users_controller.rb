@@ -5,7 +5,13 @@ class UsersController < ApplicationController
   before_action :admin_user, only: :destroy
 
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.all
+  end
+
+  def import
+    # fileはtmpに自動で一時保存される
+    User.import(params[:file])
+    redirect_to users_url
   end
 
   def show
@@ -45,6 +51,17 @@ class UsersController < ApplicationController
   end
 
   private
+  
+    
+    def import
+      if params[:file].blank?
+        flash[:warning] = "CSVファイルが選択されていません。"
+        redirect_to users_url
+      else 
+        User.import(params[:file])
+        flash[:success] = "ユーザー情報をインポートしました。"
+      end
+    end
 
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)

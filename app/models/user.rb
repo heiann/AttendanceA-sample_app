@@ -12,7 +12,7 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
   validates :department, length: { in: 2..30 }, allow_blank: true
-
+ 
  def User.digest(string)
   cost = 
     if ActiveModel::SecurePassword.min_cost
@@ -20,8 +20,8 @@ class User < ApplicationRecord
     else
       BCrypt::Engine.cost
     end
-  BCrypt::Password.create(string, cost: cost)
-  end
+   BCrypt::Password.create(string, cost: cost)
+ end
 
  def User.new_token
   SecureRandom.urlsafe_base64
@@ -38,5 +38,26 @@ class User < ApplicationRecord
   
   def forget
     update_attribute(:remember_digest, nil)
+  end
+  
+  def self.import(file)
+    CSV.foreach(file.path, headers: true) do |row|
+      user = find_by(id: row["id"]) || new
+      user.attributes = row.to_hash.slice(*updatable_attributes)
+      user.save!
+    end
+  end
+   
+  def self.generete_csv
+    CSV.generete(headers: true, encoding: Encoding::SJIS) do |csv|
+      csv << csv_attributes
+      all.each do |part|
+        csv << csv_attributes.map{|attr| part.send(attr)}
+      end
+    end
+  end
+
+  def self.updatable_attributes
+    ['user.name', 'email', 'department', 'employee_number', 'card_id', 'basic_time', 'work_start_time', 'work_end_time', 'superior', 'admin', 'admin']
   end
 end
