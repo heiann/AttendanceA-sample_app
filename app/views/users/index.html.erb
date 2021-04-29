@@ -2,12 +2,11 @@
 <h1>ユーザー一覧</h1>
 
  <div class="col-md-6 col-md-offset-1">
-   <%= form_with url: csv_import_users_path do |form| %>
-  　　　<%= form.file_field :file, accept: '.csv' %>
-  　　<div style = margin-top:10px ></div>
-  　　<%= form.submit "インポート"class = "btn btn-lg btn-success" %>
-  　<% end %>
-
+  <%= form_with url: csv_import_users_path do |form| %>
+    <%= form.file_field :file, accept: '.csv' %>
+    <div style = "margin-top: 10px" ></div>
+    <%= form.submit "CSVをインポート", class: "btn btn-primary btn-csv-import" %>
+  <% end %>
  </div>
  　  
  <div class="col-md-6 col-md-offset-1">
