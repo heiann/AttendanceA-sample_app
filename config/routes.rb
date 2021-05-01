@@ -8,6 +8,6 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
 
    resources :users do
-     collection { post :csv_import }
+     collection {post :import}
    end
 end

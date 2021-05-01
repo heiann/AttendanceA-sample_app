@@ -2,19 +2,21 @@
 <h1>ユーザー一覧</h1>
 
  <div class="col-md-6 col-md-offset-1">
-  <%= form_with url: csv_import_users_path do |form| %>
-    <%= form.file_field :file, accept: '.csv' %>
-    <div style = "margin-top: 10px" ></div>
-    <%= form.submit "CSVをインポート", class: "btn btn-primary btn-csv-import" %>
-  <% end %>
+<%= form_tag import_users_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <div style = "margin-top:10px" ></div>
+  <%= submit_tag "インポート" %>
+<% end %>
  </div>
  　  
  <div class="col-md-6 col-md-offset-1">
     <% @users.each do |user| %>
           <li><%= link_to user.name, user %></li>
+           
+            <div style = "margin-top: 10px"></div>
+            <li><%= link_to "削除", user, method: :delete, data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary" %></li>
+       
           <div style = "margin-top: 10px"></div>
-          <li><%= link_to "削除", :users, method: :delete, class: "btn btn-primary" %></li>
-          <div style = "margin-top: 10px"></div>
-          <li><%= link_to "編集", :users, method: :edit, class: "btn btn-lg btn-primary" %></li>
+          <li><%= link_to "編集", edit_user_path(user, @user), class: "btn btn-lg btn-primary" %></li>
     <% end %>
  </div>

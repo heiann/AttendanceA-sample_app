@@ -13,6 +13,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }
   validates :department, length: { in: 2..30 }, allow_blank: true
  
+ 
  def User.digest(string)
   cost = 
     if ActiveModel::SecurePassword.min_cost
@@ -41,23 +42,15 @@ class User < ApplicationRecord
   end
   
   def self.import(file)
-    CSV.foreach(file.path, headers: true) do |row|
+    CSV.foreach(file.path, encoding: "CP932:UTF-8", headers: true) do |row|
       user = find_by(id: row["id"]) || new
       user.attributes = row.to_hash.slice(*updatable_attributes)
-      user.save!
-    end
-  end
-   
-  def self.generete_csv
-    CSV.generete(headers: true, encoding: Encoding::SJIS) do |csv|
-      csv << csv_attributes
-      all.each do |part|
-        csv << csv_attributes.map{|attr| part.send(attr)}
-      end
+    
+      user.save
     end
   end
 
   def self.updatable_attributes
-    ['user.name', 'email', 'affiliation', 'employee_number', 'card_id', 'basic_time', 'work_start_time', 'work_end_time', 'superior', 'admin','password' ]
+    ['name', 'email', 'affiliation', 'employee_number', 'card_id', 'basic_time', 'work_start_time', 'work_end_time', 'superior', 'admin','password' ]
   end
 end

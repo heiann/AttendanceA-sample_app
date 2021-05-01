@@ -1,11 +1,14 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy]
-  before_action :correct_user, only: [:edit, :update]
+  before_action :logged_in_user, only: [:index, :show, :update, :destroy]
+  
   before_action :admin_user, only: :destroy
 
   def index
     @users = User.all
+    if params[:name].present?
+      @users = @users.get_by_name params[:name]
+    end
   end
 
   def import
@@ -49,22 +52,16 @@ class UsersController < ApplicationController
     flash[:success] = "#{@user.name}のデータを削除しました。"
     redirect_to users_url
   end
+  
+   def import
+     User.import(params[:file])
+     redirect_to users_path
+   end
 
   private
   
-    
-    def import
-      if params[:file].blank?
-        flash[:warning] = "CSVファイルが選択されていません。"
-        redirect_to users_url
-      else 
-        User.import(params[:file])
-        flash[:success] = "ユーザー情報をインポートしました。"
-      end
-    end
-
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :employee_number, :uid, :basic_time, :work_start_time, :work_end_time, :superior, :admin, :password)
     end
 
     # beforeフィルター
