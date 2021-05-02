@@ -1,0 +1,35 @@
+<% provide(:title, 'All Bases') %>
+
+<h1>拠点情報一覧</h1>
+<div class="col-md-10 col-md-offset-1">
+  <table class = "table table-bordered table-condensed base-table">
+    <thead>
+     <tr>
+       <td></td>
+       <td></td>
+       <td><b> 拠点番号 </b></td>
+       <td><b> 拠点名 </b></td>
+       <td><b> 勤怠種類 </b></td>
+     </tr
+    </thead>
+    <tbody>
+      <tr>
+         <td><%= link_to "編集", edit_user_basis_path(session[:user_id], @bases), class: "btn btn-primary" %></td>
+         <td>
+           <%= link_to "削除", user_basis_path(session[:user_id], @bases), method: :delete, data: {confirm: "削除した宜しいですか？"}, class: "btn btn-primary" %>
+         </td>
+         
+        <% @bases.each do |base| %>
+         <td><%= base.base_id %></td>
+         <td><%= base.base_name %></td>
+         <td><%= base.base_type %></td>
+        <% end %> 
+      </tr>
+      <tr>
+        <td>
+          <%= link_to "拠点情報追加", new_user_basis_path(current_user), class: "btn btn-primary" %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

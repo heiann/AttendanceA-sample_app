@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210501064228) do
+ActiveRecord::Schema.define(version: 20210501110347) do
+
+  create_table "bases", force: :cascade do |t|
+    t.integer "base_id"
+    t.string "base_name"
+    t.string "base_type"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_bases_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
@@ -22,7 +32,7 @@ ActiveRecord::Schema.define(version: 20210501064228) do
     t.boolean "admin", default: false
     t.string "remember_digest"
     t.string "department"
-    t.datetime "basic_time", default: "2021-04-27 23:00:00"
+    t.datetime "basic_time", default: "2021-04-30 23:00:00"
     t.datetime "work_start_time"
     t.datetime "work_end_time"
     t.string "uid"
