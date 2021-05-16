@@ -12,24 +12,29 @@
        <td><b> 勤怠種類 </b></td>
      </tr
     </thead>
-    <tbody>
-      <tr>
-         <td><%= link_to "編集", edit_user_basis_path(session[:user_id], @bases), class: "btn btn-primary" %></td>
-         <td>
-           <%= link_to "削除", user_basis_path(session[:user_id], @bases), method: :delete, data: {confirm: "削除した宜しいですか？"}, class: "btn btn-primary" %>
-         </td>
+    <tbody class = "table table-bordered table-condensed base-table">
+     <div class = "border" >
+      <% @bases.each do |base| %>
+     　  <tr>
+        
+         <th><%= link_to "編集", edit_user_basis_path(session[:user_id], base.id), class: "btn btn-primary" %></th>
+         <th>
+           <%= link_to "削除", user_basis_path(session[:user_id], base.id), method: :delete, data: {confirm: "削除した宜しいですか？"}, class: "btn btn-primary" %>
+         </th>
          
-        <% @bases.each do |base| %>
          <td><%= base.base_id %></td>
          <td><%= base.base_name %></td>
          <td><%= base.base_type %></td>
-        <% end %> 
-      </tr>
+        </tr>
+      <% end %> 
+     
+     </div>
+    </tbody>
+      
       <tr>
         <td>
           <%= link_to "拠点情報追加", new_user_basis_path(current_user), class: "btn btn-primary" %>
         </td>
       </tr>
-    </tbody>
   </table>
 </div>

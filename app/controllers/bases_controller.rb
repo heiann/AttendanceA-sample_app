@@ -1,8 +1,6 @@
 class BasesController < ApplicationController
  before_action :set_user, only:[:show, :index, :new, :create, :edit, :update, :destroy]
-
-
-  
+ 
   def index
     @user = User.find(params[:user_id])
     @bases = Base.all
@@ -14,9 +12,9 @@ class BasesController < ApplicationController
   end
   
   def create
-    @user = User.find(params[:user_id])
-    @base = Base.new(base_params)
-    if @base.save
+   @user = User.find(params[:user_id])
+   @base = Base.new(base_params)
+    if @base.save(validate: false)
       flash[:success] = "拠点登録完了しました。"
       redirect_to user_bases_path(@user)
     else
@@ -26,17 +24,15 @@ class BasesController < ApplicationController
   end
   
   def show
-     @user = User.find(params[:user_id])
      @base = Base.find(params[:id])
   end
   
   def edit
-    @user = User.find(params[:user_id])
     @base = Base.find(params[:id])
   end
   
   def update
-    @base = Base.find(params[:base_id])
+    @base = Base.find(params[:id])
     if @base.update_attributes(base_params)
       flash[:success] = "拠点を更新しました。"
       redirect_to user_bases_path(@user)
@@ -46,7 +42,7 @@ class BasesController < ApplicationController
   end
 
   def destroy
-    @base = Base.find(params[:base_id])
+    @base = Base.find(params[:id])
     @base.destroy
     flash[:success] = "拠点情報を削除しました。"
     redirect_to user_bases_path(@user)

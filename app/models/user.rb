@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :bases, dependent: :destroy
+  has_many :attendances, dependent: :destroy
   # 「remember_token」という仮想の属性を作成します。
   attr_accessor :remember_token
   before_save { self.email = email.downcase }
@@ -11,8 +12,9 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: true    
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
-  validates :department, length: { in: 2..30 }, allow_blank: true
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  validates :affiliation, length: { in: 2..30 }, allow_blank: true
+  validates :basic_time, presence: true
  
  
  def User.digest(string)

@@ -8,10 +8,10 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
 
    resources :users do
-     collection {post :import}
+     collection {post :import} 
      member do
      end 
-     resources :bases do
-     end
+     resources :bases 
+      resources :attendances
    end
 end

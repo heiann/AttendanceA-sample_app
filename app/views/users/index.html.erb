@@ -5,7 +5,7 @@
 <%= form_tag import_users_path, multipart: true do %>
   <%= file_field_tag :file %>
   <div style = "margin-top:10px" ></div>
-  <%= submit_tag "インポート" %>
+  <%= submit_tag "インポート", class: "btn btn-block btn-primary" %>
 <% end %>
  </div>
  　  
@@ -14,7 +14,7 @@
           <li><%= link_to user.name, user %></li>
            
             <div style = "margin-top: 10px"></div>
-            <li><%= link_to "削除", user, method: :delete, data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary" %></li>
+          <li><%= link_to "削除", user, method: :delete, data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary" %></li>
        
           <div style = "margin-top: 10px"></div>
           <li><%= link_to "編集", edit_user_path(user, @user), class: "btn btn-lg btn-primary" %></li>

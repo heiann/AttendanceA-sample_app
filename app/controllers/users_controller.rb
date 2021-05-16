@@ -10,7 +10,14 @@ class UsersController < ApplicationController
       @users = @users.get_by_name params[:name]
     end
   end
-
+  
+  def index_attendance
+    if Date.current == attendance.worked_on && attendance.started_at != nil && attendance.finished_at == nil 
+     @users = User.all.invludes(:attendances)
+    end
+  end
+  
+  
   def import
     # fileはtmpに自動で一時保存される
     User.import(params[:file])
@@ -18,7 +25,8 @@ class UsersController < ApplicationController
   end
 
   def show
-  end
+   @worked_sum = @attendances.where.not(started_at: nil).count
+  end 
 
   def new
     @user = User.new
@@ -57,36 +65,55 @@ class UsersController < ApplicationController
      User.import(params[:file])
      redirect_to users_path
    end
+    
+  def edit_basic_info
+  end
+  
+  def update_basic_info
+  
+    if User.update(basic_info_params)
+      flash[:success] = "基本情報を更新しました。"
+      redirect_to  users_url
+      
+    else
+      flash[:danger] = "更新は失敗しました。<br>" + @user.errors.full_messages.join("<br>")
+      redirect_to edit_basic_info_user_url
+    end
+  end  
+  # paramsハッシュからユーザーを取得します。
+    
+  def set_user
+      @user = User.find(params[:id])
+  end
 
+    # ログイン済みのユーザーか確認します。
+  def logged_in_user
+    unless logged_in?
+        store_location
+        flash[:danger] = "ログインしてください。"
+        redirect_to login_url
+    end
+  end
+
+    # アクセスしたユーザーが現在ログインしているユーザーか確認します。
+  def correct_user
+      redirect_to(root_url) unless current_user?(@user)
+  end
+
+    # システム管理権限所有かどうか判定します。
+  def admin_user
+      redirect_to root_url unless current_user.admin?
+  end
+  
   private
   
     def user_params
       params.require(:user).permit(:name, :email, :employee_number, :uid, :basic_time, :work_start_time, :work_end_time, :superior, :admin, :password)
     end
+ 
+  def basic_info_params
+      params.require(:user).permit(:basic_time, :work_start_time, :work_end_time)
+  end
 
-    # beforeフィルター
-
-    # paramsハッシュからユーザーを取得します。
-    def set_user
-      @user = User.find(params[:id])
-    end
-
-    # ログイン済みのユーザーか確認します。
-    def logged_in_user
-      unless logged_in?
-        store_location
-        flash[:danger] = "ログインしてください。"
-        redirect_to login_url
-      end
-    end
-
-    # アクセスしたユーザーが現在ログインしているユーザーか確認します。
-    def correct_user
-      redirect_to(root_url) unless current_user?(@user)
-    end
-
-    # システム管理権限所有かどうか判定します。
-    def admin_user
-      redirect_to root_url unless current_user.admin?
-    end
+  
 end
