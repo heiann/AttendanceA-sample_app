@@ -8,6 +8,12 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
 
    resources :users do
+    member do
+      get 'edit_basic_info'
+      patch 'update_basic_info'
+      get 'attendances/edit_one_month'
+      patch 'attendances/update_one_month' 
+    end
      collection {post :import} 
      member do
      end 

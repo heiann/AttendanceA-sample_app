@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :logged_in_user, only: [:index, :show, :update, :destroy]
-  
+  before_action :set_one_month, only: :show
   before_action :admin_user, only: :destroy
 
   def index
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   end
 
   def show
-   @worked_sum = @attendances.where.not(started_at: nil).count
+    @worked_sum = @attendances.where.not(started_at: nil).count
   end 
 
   def new

@@ -30,12 +30,12 @@ class ApplicationController < ActionController::Base
     redirect_to root_url unless current_user.admin?
   end
   
-  
-  # ページ出力前に1ヶ月分のデータの存在を確認・セットします。
-  # ページ出力前に1ヶ月分のデータの存在を確認・セットします。
+    # ページ出力前に1ヶ月分のデータの存在を確認・セットします。
   def set_one_month 
+    
     @first_day = params[:date].nil? ?
     Date.current.beginning_of_month : params[:date].to_date
+   
     @last_day = @first_day.end_of_month
     one_month = [*@first_day..@last_day] # 対象の月の日数を代入します。
     # ユーザーに紐付く一ヶ月分のレコードを検索し取得します。
@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
         # 繰り返し処理により、1ヶ月分の勤怠データを生成します。
         one_month.each { |day| @user.attendances.create!(worked_on: day) }
       end
-    @attendances = @user.attendances.where(worked_on: @first_day..@last_day).order(:worked_on)
+       @attendances = @user.attendances.where(worked_on: @first_day..@last_day).order(:worked_on)
     end
 
   rescue ActiveRecord::RecordInvalid # トランザクションによるエラーの分岐です。
