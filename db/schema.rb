@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 20210505125718) do
     t.boolean "admin", default: false
     t.string "remember_digest"
     t.string "department"
-    t.datetime "basic_time", default: "2021-04-30 23:00:00"
+    t.datetime "basic_time", default: "2021-05-19 23:00:00"
     t.datetime "work_start_time"
     t.datetime "work_end_time"
     t.string "uid"

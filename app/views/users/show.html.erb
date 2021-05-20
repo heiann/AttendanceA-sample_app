@@ -24,6 +24,19 @@
     </tr>
   </table>
 </div>   
+
+
+  <% if current_user.admin? %>
+   <div>
+     <li><%= link_to "所属長承認申請のお知らせ", "#", class: "btn btn-primary" %></li>
+     <div style = "margin-top:10px" ></div>
+     <li><%= link_to "勤怠変更申請のお知らせ", "#", class: "btn btn-primary" %></li>
+     <div style = "margin-top:10px" ></div>
+     <li><%= link_to "残業申請のお知らせ", "#", class: "btn btn-primary" %></li>
+   </div> 
+  <% end %>
+
+  <div style = "margin-top:10px" ></div>
   
 <div class ="">
       <%= link_to "勤怠を編集", "#", class: "btn btn-primary" %>

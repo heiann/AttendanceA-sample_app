@@ -12,16 +12,13 @@ class UsersController < ApplicationController
   end
   
   def index_attendance
-    if Date.current == attendance.worked_on && attendance.started_at != nil && attendance.finished_at == nil 
-     @users = User.all.invludes(:attendances)
-    end
+    @users = User.all.includes(:attendances)
   end
-  
   
   def import
     # fileはtmpに自動で一時保存される
     User.import(params[:file])
-    redirect_to users_url
+    redirect_to users_path
   end
 
   def show
@@ -61,10 +58,7 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
   
-   def import
-     User.import(params[:file])
-     redirect_to users_path
-   end
+  
     
   def edit_basic_info
   end

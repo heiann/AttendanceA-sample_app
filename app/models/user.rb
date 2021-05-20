@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :bases, dependent: :destroy
   has_many :attendances, dependent: :destroy
+
   # 「remember_token」という仮想の属性を作成します。
   attr_accessor :remember_token
   before_save { self.email = email.downcase }
@@ -48,8 +49,7 @@ class User < ApplicationRecord
     CSV.foreach(file.path, encoding: "CP932:UTF-8", headers: true) do |row|
       user = find_by(id: row["id"]) || new
       user.attributes = row.to_hash.slice(*updatable_attributes)
-    
-      user.save
+      user.save!
     end
   end
 
