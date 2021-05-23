@@ -1,0 +1,2 @@
+class MonthApprovalsController < ApplicationController
+end

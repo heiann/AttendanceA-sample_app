@@ -39,7 +39,7 @@
   <div style = "margin-top:10px" ></div>
   
 <div class ="">
-      <%= link_to "勤怠を編集", "#", class: "btn btn-primary" %>
+      <%= link_to "勤怠を編集", attendances_edit_one_month_user_path, class: "btn btn-primary" %>
       <%= link_to "CSV出力", "#", class: "btn btn-primary" %>
       <div style = "margin-top:10px" ></div>
       <%= link_to "勤怠修正ログ(承認済)", "#", class: "btn btn-primary" %>
@@ -124,9 +124,8 @@
             <% else %>
         　     未
             <% end %>
-          </div>
-          <%= link_to "申請", "#", class: "btn btn-primary btn-lg" %>
-        </td>
+          </div>　     
+        </td> 
       </tr>
     </tfoot>
   </table>

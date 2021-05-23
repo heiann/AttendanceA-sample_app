@@ -20,5 +20,6 @@ Rails.application.routes.draw do
      end 
      resources :bases 
       resources :attendances
+       resources :month_approvals
    end
 end

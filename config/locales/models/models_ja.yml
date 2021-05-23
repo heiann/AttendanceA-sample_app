@@ -20,4 +20,6 @@ ja:
           started_at: 出勤時間
           finished_at: 退勤時間
           note: 備考
+          overtime_instruction: 残業指示
+          instrucyor: 指示者
           user: ユーザーID

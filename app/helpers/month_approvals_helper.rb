@@ -1,0 +1,2 @@
+module MonthApprovalsHelper
+end

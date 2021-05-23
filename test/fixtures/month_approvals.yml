@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  applicant_user_id: 1
+  approval_superior_id: 1
+  approval_status: 1
+  approval_month: 2021-05-20 09:58:12
+  user: one
+
+two:
+  applicant_user_id: 1
+  approval_superior_id: 1
+  approval_status: 1
+  approval_month: 2021-05-20 09:58:12
+  user: two
