@@ -52,7 +52,14 @@ class User < ApplicationRecord
       user.save!
     end
   end
-
+  
+  def self.overtime_users
+    overtime_users = Attendance.where.not(overtime_end: nil, time_content: nil, superior_confirmation: nil).pluck(:user_id)
+  end
+  
+  def self.overtime_info
+    overtime_info = Attendance.where.not(overtime_end: nil, time_content: nil, superior_confirmation: nil)
+  end
   def self.updatable_attributes
     ['name', 'email', 'affiliation', 'employee_number', 'card_id', 'basic_time', 'work_start_time', 'work_end_time', 'superior', 'admin','password' ]
   end

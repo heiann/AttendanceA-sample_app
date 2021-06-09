@@ -1,0 +1,39 @@
+<div class="modal-dialog modal-lg modal-dialog-center">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h1 class="modal-title">上長Bからの一ヶ月分勤怠申請</h1>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+        
+            <%= render 'shared/error_messages', object: @user %>
+               <table class="table table-bordered table-condensed table-hover" id="table-month_approval">
+                 <tr>
+                   <th>月</th>
+                   <th>指示者確認</th>
+                   <th>変更</th>
+                   <th>勤怠を確認する</th>
+                 </tr>
+                 <tr>
+                   <th></th>
+                   <th></th>
+                   <th></th>
+                   <th></th>
+                 </tr>
+               </table>
+            <div class="center">
+              <%= submit "変更を送信する", class: "btn btn-primary btn-overtime_request" %>
+              <button type="button" class ="btn btn-default btn-overtime_request" data-dismiss="modal">
+                キャンセル
+              </button>
+            </div>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

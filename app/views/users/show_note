@@ -1,101 +1,186 @@
-<% provide(:title, @user.name) %>
-<div>
-  <table class="table table-bordered table-condensed user-table">
+<% provide(:title, "Attendance Log") %>
+<h1>勤怠ログ</h1>
+<%= form_with(model: @user,url: attendance_log_user_path(@user), method: :get, local: true) do |f| %>
+  <table>
     <tr>
-      <td>
-        <div class="btn-users-show">
-           <%= link_to "⇦", user_path(date: @first_day.prev_month), class: "btn btn-info" %>
-            【<%= l(@first_day, format: :middle) %>】時間管理表
-           <%= link_to "⇨", user_path(date: @first_day.next_month), class: "btn btn-info" %>
-        </div>
-      </td>
-      <td>指定勤務開始時間：<%= format_basic_info(@user.basic_time) %></td>
-      <td>指定勤務終了時間：<%= format_basic_info(@user.basic_time) %></td>
-      <td>基本時間：<%= format_basic_info(@user.basic_time) %></td>
-      <td>初日：<%= l(@first_day, format: :short) %></td>
+      <td><%= f.select :year, @year, {selected: @year_select}, id:"act1", class: "form-control" %></td>
+      <td><%= f.text_field :actually_year, readonly: true, value:@years, id:"actually1", size: 7, class:"form-control log-style" %></td>
     </tr>
-   
     <tr>
-      <td>所属：<%= @user.department.present? ? @user.department : "テスター" %></td>
-      <td>名前：<%= @user.name %></td>
-      <td>コード:<%= @user.id %></td>
-      <td>出勤日数：<%= @worked_sum %>日</td>
-      <td>締め：<%= l(@last_day, format: :short) %></td>
+      <td><%= f.select :month, @month, {selected: @month_select}, id:"act2", class: "form-control" %></td>
+      <td><%= f.text_field :actually_month, readonly: true, value:@months, id:"actually2", size: 7, class:"form-control log-style" %></td>
     </tr>
   </table>
-</div>   
-  
-<div class ="">
-      <%= link_to "勤怠を編集", "#", class: "btn btn-primary" %>
-      <%= link_to "CSV出力", "#", class: "btn btn-primary" %>
-      <div style = "margin-top:10px" ></div>
-      <%= link_to "勤怠修正ログ(承認済)", "#", class: "btn btn-primary" %>
-</div>
-      <div style = "margin-top:10px" ></div>
-<div>
-  <table class="table table-bordered table-condensed table-hover" id="table-attendances">
+  <%= f.hidden_field :key, :value => params[:id], id:"id" %>
+  <table class="table table-bordered table-condensed table-hover table-striped" id="log-table">
     <thead>
       <tr>
-        <th rowspan="3" class = "center">日付</th>
-        <th rowspan="3" class = "center">曜日</th>
-        <th colspan="8" class = "center">実績</th>
-        <th colspan="5" class = "center">所定外勤務</th>
-      </tr>
-      <tr>
-        <th colspan="3" class = "center">出社</th>
-        <th colspan="3" class = "center">退社</th>
-        <th rowspan="2" class = "center">在社時間</th>
-        <th rowspan="2" class = "center">備考</th>
-        <th colspan="2" class = "center">終了予定時間</th>
-        <th rowspan="2" class = "center">時間外時間</th>
-        <th rowspan="2" class = "center">業務処理内容</th>
-        <th rowspan="2" class = "center">指示者確認(印)</th>
-      </tr>
-      <tr>
-        <th class = "center">時</th>
-        <th class = "center">分</th>
-        <th class = "center">勤怠登録</th>
-        <th class = "center">時</th> 
-        <th class = "center">分</th>
-        <th class = "center">勤怠登録</th>
-        <th class = "center">時</th>
-        <th class = "center">分</th>
+        <th> 日付</th>
+        <th>変更前出勤時間</th>
+        <th>変更前退社時間</th>
+        <th>変更後出勤時間</th>
+        <th>変更後退社時間</th>
+        <th>承認者</th>
+        <th>承認日</th>
       </tr>
     </thead>
-
-    <tbody>
-      <% @attendances.each do |day| %>
-        <tr>
-          <td><%= l(day.worked_on, format: :short) %></td>
-          <td><%= $days_of_the_week[day.worked_on.wday] %></td>
-          <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
-          <td><%= format_min(day.started_at) if day.started_at.present? %></td>
-          <td>
-            <% if btn_text = attendance_state(day) %>
-              <%= link_to "#{btn_text}登録", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
-            <% end %>
-          </td>
-          <td><%= l(day.finished_at, format: :hour) if day.finishied_at.present? %></td>
-          <td><%= format_min(day.finished_at.present?) %></td>
-          <td>
-            <% if btn_text = attendance_state(day) %>
-              <%= link_to "#{btn_text}登録", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
-            <% end %>
-          </td>
-          <td>
-            <% if day.started_at.present? && day.finished_at.present? %>
-              <%= str_times = working_times(day.started_at, day.finished_at) %>
-              <% @total_working_times = @total_working_times.to_f + str_times.to_f %>
-            <% end %>
-          </td>
-          <td><%= day.note %></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      <% end %>
-    </tbody>
+    <% @search.each do |attendance|  %>
+      <tr>
+        <td><%= l(attendance.worked_on.to_datetime, format: :time3) %></td>
+        <td><%= l(attendance.first_approved_started_at, format: :time) %></td>
+        <td><%= l(attendance.first_approved_finished_at, format: :time) %></td>
+        <td><%= l(attendance.approved_started_at, format: :time) %></td></td>
+        <td><%= l(attendance.approved_finished_at, format: :time) %></td>
+        <td><%= superior_search(attendance.oneday_instructor_confirmation) %></td>
+        <td><%= l(attendance.approved_update_time, format: :time3) %></td>
+      </tr>
+    <% end %>
   </table>
+<% end %>
+<p></p>
+<span></span>
+<script>
+  
+​
+​
+$(function() {
+ 
+  //セレクトボックスが切り替わったら発動
+  $('#act1').change(function() {
+ 
+    //選択したvalue値を変数に格納
+    var val = $(this).val();
+    $('#act2').change(function() {
+      var val1 = $(this).val();
+      var id = $('#id').val();
+      var url = "/users/" + id + "/attendance_log"
+    $.ajax({
+      url: url,
+      type: "GET",
+      data: {year : val,
+             month : val1 },
+      datatype: "html",
+      success: function(data){
+        $('#act1').val(1); /* 元の初期選択にに戻してる */
+        $('#act2').val(1); /* 元の初期選択にに戻してる */
+      },
+      error: function(data){
+        //失敗時の処理
+        console.log("失敗")
+      }
+    });
+      //選択したvalue値をp要素に出力試し
+      $('p').text(val1);
+      $('span').text(val);
+    });
+  });
+});
+</script>
+
+
+
+
+<%= form_with(model: @attendance, url: attendances_update_overtime_request_user_path(@user,@attendance), local: true, method: :patch) do |f| %>
+ <%= render 'shared/error_messages', object: @user %>
+  <div class="modal-dialog modal-lg modal-dialog-center">
+   <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label = "close"><span aria-hidden = "true">&times;</span></button> 
+        <h1 class="modal-title">残業申請</h1>
+    　　　　<div class="modal-body">
+      　　　　　<div class="row">
+        　　　　<div class="col-md-6 col-md-offset-3">
+                  <table class = "table table-bordered table-condensed table-striped overtime-request-table">
+                    <thead>
+                      <tr>
+                        <th>日付</th>
+                        <th>曜日</th>
+                        <th>終了予定時間</th>
+                        <th>翌日</th>
+                        <th>業務処理内容</th>
+                        <th>指示者確認(印)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     <% @attendances.each do |day| %>
+                       <%= f.fields_for "attendances[]", day do |attendance| %>
+                        <% if day.worked_on == @attendance.worled_on %>
+                          <tr>
+                            <td><%= l(day.worked_on, format: :short) %></td>
+                            <td><%= $days_of_the_week[day.worked_on.wday] %></td>
+                            <td><%= attendance.time_select :overtime_end, { include_blank: true }, class: "input-sm" %></td>
+                            <td><%= attendance.check_box :next_day_check, checked: false %></td>
+                            <td><%= attendance.text_field :time_content, class: "form-control" %></td>
+                            <td><%= attendance.select :superior_confirmation, { "なし": 1, "申請中": 2,"承認": 3, "否認": 4, }, {include_blank: true }, class: "form-control", requred: true %></td>
+                          </tr>
+                        <% end %>
+                       <% end %>
+                     <% end %>
+                    </tbody>
+                  </table>
+                 <%= f.submit "変更を送信する", class: "btn btn-primary btn-block" %>
+                
+               </div>
+             </div>
+           </div>
+      </div>
+   </div>
+ </div>
+<% end %>
+
+
+
+
+<% provide(:class_text, 'basic-info') %>
+
+<div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h1 class="modal-title">残業申請</h1>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <%= form_with(model: @user, url: update_basic_info_user_path(user), local: true, method: :patch) do |f| %>
+            <%= render 'shared/error_messages', object: @user %>
+              <table class = "table table-bordered table-condensed table-striped basic-info-table">
+                    <thead>
+                      <tr>
+                        <th>日付</th>
+                        <th>曜日</th>
+                        <th>終了予定時間</th>
+                        <th>翌日</th>
+                        <th>業務処理内容</th>
+                        <th>指示者確認(印)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     <% @attendances.each do |day| %>
+                       <%= f.fields_for "attendances[]", day do |attendance| %>
+                        <% if day.worked_on == @attendance.worled_on %>
+                          <tr>
+                            <td><%= l(day.worked_on, format: :short) %></td>
+                            <td><%= $days_of_the_week[day.worked_on.wday] %></td>
+                            <td><%= attendance.time_select :overtime_end, { include_blank: true }, class: "input-sm" %></td>
+                            <td><%= attendance.check_box :next_day_check, checked: false %></td>
+                            <td><%= attendance.text_field :time_content, class: "form-control" %></td>
+                            <td><%= attendance.select :superior_confirmation, { "なし": 1, "申請中": 2,"承認": 3, "否認": 4, }, {include_blank: true }, class: "form-control", requred: true %></td>
+                          </tr>
+                        <% end %>
+                       <% end %>
+                     <% end %>
+                    </tbody>
+                  </table>
+                 <%= f.submit "変更を送信する", class: "btn btn-primary btn-block" %>
+                <div class="center">
+                 <button type="button" class="btn btn-default %>" data-dismiss="modal">
+                   キャンセル
+                 </button>
+                </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

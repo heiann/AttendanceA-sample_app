@@ -14,12 +14,17 @@ Rails.application.routes.draw do
       patch 'update_basic_info'
       get 'attendances/edit_one_month'
       patch 'attendances/update_one_month' 
+      get 'attendances/edit_overtime_request'
+      patch 'attendances/update_overtime_request'
+      get 'attendances/attendance_log'
+      
     end
      collection {post :import} 
      member do
      end 
      resources :bases 
       resources :attendances
-       resources :month_approvals
+      
+      resources :month_approvals
    end
 end

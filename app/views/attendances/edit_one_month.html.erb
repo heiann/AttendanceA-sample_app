@@ -11,8 +11,10 @@
         <th>出勤分</th>
         <th>退勤時</th>
         <th>退勤分</th>
+        <th>翌日</th>
         <th>在社時間</th>
         <th>備考</th>
+        <th>指示者確認</th>
       </tr>
     </thead>
     <tbody>
@@ -21,16 +23,18 @@
         <tr>
           <td><%= l(day.worked_on, format: :short) %></td>
           <td><%= $days_of_the_week[day.worked_on.wday] %></td>
-          <td><%= attendance.time_select :started_at, {include_blank: true}, disebled: true, class: "form-control bootstrap-date" %></td>
-          <td><%= attendance.time_select :started_at, {include_blank: true}, disebled: true, class: "form-control bootstrap-date" %></td>
+          <td><%= attendance.time_select :started_at, {include_blank: true}, class: "form-control bootstrap-date" %></td>
+          <td></td>
           <td><%= attendance.time_select :finished_at, {include_blank: true}, class: "form-control bootstrap-date" %></td>
-          <td><%= attendance.time_select :finished_at, {include_blank: true}, class: "form-control bootstrap-date" %></td>
-          <td>
+          <td></td>
+          <td><%= attendance.check_box :next_day_check, checked: false %></td>
+          <td> 
              <% if day.started_at.present? && day.finished_at.present? %>
                   <%= working_times(day.started_at, day.finished_at) %>
              <% end %>
           </td>
           <td><%= attendance.text_field :note, class: "form-control" %></td>
+          <td><%= attendance.select :select_superior_id, [['上長A',"上長A"], ['上長B',"上長B"]], {selected: 1}, {class: "form-contyrol"} %></td>
         </tr>
        <% end %>
       <% end %>
@@ -38,7 +42,8 @@
   </table>
 </div>
 <div class="center">
-  <%= f.submit "まとめて更新", class: "btn btn-lg btn-primary" %>
-  <%= link_to "キャンセル", user_path(date: @first_day), class: "btn btn-lg btn-default" %>
+  <%= link_to "キャンセル", user_path(date: @first_day), class: "btn btn-lg btn-primary" %>
+  <%= f.submit "編集を保存する", class: "btn btn-lg btn-primary" %>
 </div>
 <% end %>
+

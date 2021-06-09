@@ -42,7 +42,7 @@
       <%= link_to "勤怠を編集", attendances_edit_one_month_user_path, class: "btn btn-primary" %>
       <%= link_to "CSV出力", "#", class: "btn btn-primary" %>
       <div style = "margin-top:10px" ></div>
-      <%= link_to "勤怠修正ログ(承認済)", "#", class: "btn btn-primary" %>
+      <%= link_to "勤怠修正ログ(承認済)",  attendances_attendance_log_user_path, class: "btn btn-primary" %>
 </div>
       <div style = "margin-top:10px" ></div>
 <div>
@@ -51,7 +51,7 @@
 <div>
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
    <thead>
-      <tr>
+      <tr></tr>
         <th rowspan="3" class = "center">残業申請</th>
         <th rowspan="3" class = "center">日付</th>
         <th rowspan="3" class = "center">曜日</th>
@@ -82,14 +82,14 @@
     <tbody>
       <% @attendances.each do |day| %>
         <tr>
-          <td><%= link_to "残業申請", "#", class: "btn btn-primary btn-lg" %></td>
+          <td><%= link_to "残業申請", attendances_edit_overtime_request_user_path(@user), remote: true, class: "btn btn-primary btn-lg" %></td>
           <td><%= l(day.worked_on, format: :short) %></td>
           <td><%= $days_of_the_week[day.worked_on.wday] %></td>
           <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
           <td><%= format_min(day.started_at) if day.started_at.present? %></td>
           <td>
             <% if btn_text = attendance_state(day) %>
-              <%= link_to "#{btn_text}登録", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
+              <%= link_to "#{btn_text}登録", user_attendance_path(@user,day), method: :patch, class: "btn btn-primary btn-attendance" %>
             <% end %>
           </td>
           <td><%= l(day.finished_at, format: :hour) if day.finished_at.present? %></td>
@@ -118,15 +118,20 @@
         <td><%= format("%.2f", @total_working_times.to_f) %></td>
         <td colspan="5"></td>
         <td rowspan="3">
-          <div class = "table-body">所属長承認
-            <% unless @approver == nil %>
-              <%= @approver.name %>から承認済
+           <div class = "table-body">所属長承認
+            <% unless @month_approver == nil %>
+              <%= @month_approver.name %>から承認済
             <% else %>
         　     未
-            <% end %>
-          </div>　     
+            <% end %><br><br>
+          <%= select_tag 'superior', options_for_select({上長A: 1, 上長B: 2}, 1), include_blank: true %><br><br>
+          <%= link_to "申請", "#", class: "btn btn-primary" %>
         </td> 
       </tr>
     </tfoot>
   </table>
 </div>
+<!--モーダルウインドウ表示-->
+<div id="@user_attendances-edit-overtime-request" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="attendance-log" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="edit-basic-info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
