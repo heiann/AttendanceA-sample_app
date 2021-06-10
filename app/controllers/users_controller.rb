@@ -1,15 +1,15 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
-  before_action :logged_in_user, only: [:index, :show, :update, :destroy, :edit_basic_info, :update_basic_info]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :edit_overwork_approval, :update_overwork_approval]
+  before_action :logged_in_user, only: [:index, :show, :update, :destroy, :edit_basic_info, :update_basic_info, :edit_overwork_approval, :update_overwork_approval]
   before_action :correct_user, only: [:edit, :update]
   before_action :set_one_month, only: :show
-  before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info]
+  before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :edit_overwork_approval, :update_overwork_approval]
   
 
   def index
     @users = User.all
     if params[:name].present?
-      @users = @users.get_by_name params[:name]
+      @users = @users.get_by_name params[:name] 
     end
   end
   
@@ -63,6 +63,12 @@ class UsersController < ApplicationController
   def edit_basic_info
   end
   
+  def edit_overwork_approval
+  end
+  
+  def update_overwork_approval
+  end
+  
   def update_basic_info
   
     if User.update(basic_info_params)
@@ -109,5 +115,7 @@ class UsersController < ApplicationController
       params.require(:user).permit(:basic_time, :work_start_time, :work_end_time)
   end
 
-  
+  def basic1_info_params
+      params.require(:user).permit(:basic_time, :work_start_time, :work_end_time)
+  end
 end

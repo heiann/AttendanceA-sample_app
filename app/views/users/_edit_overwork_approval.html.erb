@@ -1,4 +1,3 @@
-
 <div class="modal-dialog modal-lg modal-dialog-center">
   <div class="modal-content">
     <div class="modal-header">
@@ -10,8 +9,8 @@
     <div class="modal-body">
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
-          <%= form_with(model: @attendance, url: attendances_update_overtime_request_user_path(@user, @day), local: true, method: :patch) do |f| %>
-        　　<table class = "table table-bordered table-condensed table-overtime">
+          <%= form_with(model: @user, url: update_overwork_approval_user_path(@user), local: true, method: :patch) do |f| %>
+        　　<table class = "table table-bordered table-condensed table-overwork_approval">
         　　     <thead>
                       <tr>
                         <th>日付</th>

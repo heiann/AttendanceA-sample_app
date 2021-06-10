@@ -15,14 +15,14 @@ class AttendancesController < ApplicationController
 
   
   def edit_overtime_request
-    @user = User.find(params[:user_id])
-    @attendance = @user.attendances.find(params[:id])
+    @user = User.find(@attendance.user_id)
+    @attendance = Attendances.find_by(params[:id])
   end
   
   def update_overtime_request
-    @user = User.find(params[:user_id])
-    @attendance = @user.attendances.find(params[:id])
-    if @attendance.update_attributes(overtime_params)
+    @user = User.find(@attendance.user_id)
+    @attendance = Attendance.find_by(params[:id])
+    if @attendance.update_attributes(overtime_request_params)
       flash[:success] = "残業を申請しました。"
     else
       flash[:danger] = "申請をキャンセルしました。<br>" + @user.errors.full_messages.join("<br>")

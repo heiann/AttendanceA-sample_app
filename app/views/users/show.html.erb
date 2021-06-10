@@ -66,7 +66,11 @@
         <th colspan="2" class = "center">終了予定時間</th>
         <th rowspan="2" class = "center">時間外時間</th>
         <th rowspan="2" class = "center">業務処理内容</th>
-        <th rowspan="2" class = "center">指示者確認(印)</th>
+        <th rowspan="2" class = "center">指示者確認
+          <div class = "maru size_small black">
+            <div class = "letter3">印</div>
+          </div>
+        </th>
       </tr>
       <tr>
         <th class = "center">時</th>
@@ -82,7 +86,7 @@
     <tbody>
       <% @attendances.each do |day| %>
         <tr>
-          <td><%= link_to "残業申請", attendances_edit_overtime_request_user_path(@user), remote: true, class: "btn btn-primary btn-lg" %></td>
+          <td><%= link_to "残業申請", edit_overwork_approval_user_path(@user), remote: true, class: "btn btn-primary btn-lg" %></td>
           <td><%= l(day.worked_on, format: :short) %></td>
           <td><%= $days_of_the_week[day.worked_on.wday] %></td>
           <td><%= l(day.started_at, format: :hour) if day.started_at.present? %></td>
@@ -132,6 +136,7 @@
   </table>
 </div>
 <!--モーダルウインドウ表示-->
-<div id="@user_attendances-edit-overtime-request" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
-<div id="attendance-log" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="edit-overtime-request" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<!--モーダルウインドウ表示-->
+<div id="edit-overwork-approval" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div id="edit-basic-info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>

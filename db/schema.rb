@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210529115149) do
+ActiveRecord::Schema.define(version: 20210610023600) do
 
   create_table "attendances", force: :cascade do |t|
     t.date "worked_on"
@@ -66,6 +66,9 @@ ActiveRecord::Schema.define(version: 20210529115149) do
     t.integer "employee_number"
     t.string "affiliation"
     t.boolean "superior"
+    t.datetime "over_work_in"
+    t.datetime "overwork_end"
+    t.string "superior_affiliation"
   end
 
 end
