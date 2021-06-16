@@ -135,3 +135,57 @@ $(function() {
     </div>
   </div>
 </div>
+
+
+
+<div class="modal-dialog modal-lg modal-dialog-center">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h1 class="modal-title">残業申請</h1>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <%= form_with(model: @user, url: update_overwork_approval_user_path(@user), local: true, method: :patch) do |f| %>
+        　　<table class = "table table-bordered table-condensed table-overwork_approval">
+        　　     <thead>
+                      <tr>
+                        <th>日付</th>
+                        <th>曜日</th>
+                        <th>終了予定時間</th>
+                        <th>翌日</th>
+                        <th>業務処理内容</th>
+                        <th>指示者確認
+                         <div class = "maru size_small black">
+                           <div class = "letter3">印</div>
+                         </div>
+                        </th>
+                      </tr>
+                </thead>
+                <tbody>
+                  <% css_class =
+                  case $days_of_the_week[@attendance.worked_on.wday]
+                   when '土'
+                     'text-primary'
+                   when '日'
+                     'text-danger'
+                   end
+                   %>
+                  <td><%= l(day.worked_on, format: :short) %></td>
+                  <td><%= $days_of_the_week[day.worked_on.wday] %></td>
+                  <td><%= attendance.time_select :overtime_end, { include_blank: true }, class: "input-sm" %></td>
+                  <td><%= attendance.check_box :next_day_check, checked: false %></td>
+                  <td><%= attendance.text_field :time_content, class: "form-control" %></td>
+                  <td><%= attendance.select :superior_confirmation, { "なし": 1, "申請中": 2,"承認": 3, "否認": 4, }, {include_blank: true }, class: "form-control", requred: true %></td>
+                </tbody>
+        　　</table>
+            <%= f.submit "変更を送信する", class: "btn btn-primary btn-block" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

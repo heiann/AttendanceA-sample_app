@@ -115,7 +115,8 @@ class UsersController < ApplicationController
       params.require(:user).permit(:basic_time, :work_start_time, :work_end_time)
   end
 
-  def basic1_info_params
-      params.require(:user).permit(:basic_time, :work_start_time, :work_end_time)
+  def overwork_approval_params
+    params.require(:user).permit(:over_work_in, :overwork_end, :superior_affiliation)
   end
+  
 end
