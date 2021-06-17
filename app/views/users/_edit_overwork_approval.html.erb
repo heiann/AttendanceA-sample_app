@@ -8,8 +8,9 @@
     </div>
     <div class="modal-body">
       <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-10 col-md-offset-1">
           <%= form_with(model: @user, url: update_overwork_approval_user_path(@user), local: true, method: :patch) do |f| %>
+            <%= f.hidden_field :id, :value => @attendance %>
              <table class = "table table-bordered table-condensed table-striped  table-overwork_approval">
         　　     <thead>
                   <tr>
@@ -26,12 +27,15 @@
                   </tr>
                </thead>
                <tbody>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <tr>
+                    <td><%= @day %></td>
+                    <td></td>
+                    <td><%= f.time_field :overwork_end, class: "form-control" %></td>
+                    <td><%= f.check_box(:next_day, { :checked => false  }) %></td>
+                    <td><%= f.text_field :overwork_memo, class: "form-control" %></td>
+                    <td><%= f.select :superior, [["superior", "superior"],["管理者", "管理者"],["上長A", "上長A"],["上長B", "上長B"]],:include_blank => true ,class:"form-control" %></td>
+                  </tr>
+               
                </tbody>
             </table>
               <div type = margin-top: 10px></div> 

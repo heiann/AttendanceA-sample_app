@@ -23,3 +23,7 @@ ja:
           overtime_instruction: 残業指示
           instrucyor: 指示者
           user: ユーザーID
+          over_work_in: 残業開始時間
+          overwork_end: 残業終了時間
+          superior_affiliation: 所属長承認
+          superior: 所属長

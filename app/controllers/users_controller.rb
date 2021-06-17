@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :edit_overwork_approval, :update_overwork_approval]
   before_action :logged_in_user, only: [:index, :show, :update, :destroy, :edit_basic_info, :update_basic_info, :edit_overwork_approval, :update_overwork_approval]
   before_action :correct_user, only: [:edit, :update]
-  before_action :set_one_month, only: :show
+  before_action :set_one_month, only: [:show, :edit_one_month, :edit_overwork_approval, :update_overwork_approval]
   before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :edit_overwork_approval, :update_overwork_approval]
   
 
@@ -64,9 +64,11 @@ class UsersController < ApplicationController
   end
   
   def edit_overwork_approval
+     @users = User.find(params[:id])
   end
   
   def update_overwork_approval
+     @users = User.find(params[:id])
   end
   
   def update_basic_info

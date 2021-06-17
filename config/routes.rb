@@ -17,8 +17,8 @@ Rails.application.routes.draw do
       get 'attendances/edit_one_month'
       patch 'attendances/update_one_month' 
       get 'attendances/attendance_log'
-       get 'attendances/edit_overtime_request'
-       patch 'attendances/update_overtime_request'
+      get 'attendances/edit_overtime_request'
+      patch 'attendances/update_overtime_request'
     end
      collection {post :import} 
      member do
