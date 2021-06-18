@@ -189,3 +189,63 @@ $(function() {
     </div>
   </div>
 </div>
+
+
+
+<div class="hover">
+  <!--上長で（自分かどうか）&未承認だったら申請のお知らせの表示・未承認のものがあれば文字は赤色-->
+  <% if current_user?(@user) %>
+    <% if current_user.superior? %>
+      <% unless @monthly_confirmation_count == nil %>
+        <% if @monthly_confirmation_count > 0 %>
+          <div class="border border-danger text text-danger">
+            <%= link_to "【所属長承認申請のお知らせ】", attendances_monthly_confirmation_form_user_path(@user), remote: true, class: 'text text-danger' %>
+              <div id="monthly-confirmation-form-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+            <!-- 所属長承認の件数をカウントする-->
+              <%= @monthly_confirmation_count %>件のお知らせがあります
+          </div>
+        <% else %>
+          <p>【所属長承認申請のお知らせ】</p><br>
+        <% end %>
+      <% end %>
+      
+      <% unless @monthly_confirmation_count == nil %>
+        <% if @monthly_confirmation_count > 0 %>
+          <div class="border border-danger text text-danger">
+            <%= link_to "【勤怠変更申請のお知らせ】", attendances_change_confirmation_form_user_path(@user), remote: true, class: 'text text-danger' %>
+              <div id="change-confirmation-form-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+              <%= @change_confirmation_count %>件のお知らせがあります
+          </div>
+        <% else %>
+          <p>【勤怠変更申請のお知らせ】</p><br>
+        <% end %>
+      <% end %>
+      
+​
+    <%= link_to "【残業申請のお知らせ】", "#" %>
+      
+    <% end %>
+  <% end %>
+</div>
+​
+<div class="btn-users-show">
+    <% if current_user?(@user) %>
+    <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
+    <%= link_to "CSV出力", "#", class: "btn btn-primary" %><br>
+    <%= link_to "勤怠修正ログ（承認済）", attendance_logs_path(@attendance, params: {id: @user.id, first_day: @first_day}), :style=>"color:white;", class: "btn btn-primary btn-sm" %>
+    <% end %>
+</div>
+​
+
+
+ <td>
+            <% if day.worked_on.wday == 6 %>
+              <%= $days_of_the_week[6] = nil %>
+              <font color="Blue">土</font>
+            <% end %> 
+            <% if day.worked_on.wday == 0 %>
+              <%= $days_of_the_week[0] = nil %>
+              <font color="Red">日</font>
+            <% end %>
+            <%= $days_of_the_week[day.worked_on.wday] %>
+          </td>

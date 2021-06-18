@@ -27,15 +27,16 @@
                   </tr>
                </thead>
                <tbody>
+                <% @attendances.each do |day| %>
                   <tr>
-                    <td><%= @day %></td>
-                    <td></td>
+                    <td><%= l(day.worked_on, format: :short) %></td>
+                    <td><%= $days_of_the_week[day.worked_on.wday] %></td>
                     <td><%= f.time_field :overwork_end, class: "form-control" %></td>
                     <td><%= f.check_box(:next_day, { :checked => false  }) %></td>
                     <td><%= f.text_field :overwork_memo, class: "form-control" %></td>
                     <td><%= f.select :superior, [["superior", "superior"],["管理者", "管理者"],["上長A", "上長A"],["上長B", "上長B"]],:include_blank => true ,class:"form-control" %></td>
                   </tr>
-               
+                <% end %>
                </tbody>
             </table>
               <div type = margin-top: 10px></div> 
