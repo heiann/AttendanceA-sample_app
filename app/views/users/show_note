@@ -249,3 +249,28 @@ $(function() {
             <% end %>
             <%= $days_of_the_week[day.worked_on.wday] %>
           </td>
+
+
+
+ <%= f.hidden_field :id, :value => @attendance %>
+ 
+ attendances_controller.rb
+  def sample
+    # 取得できるものは以下と同じ @user = User.find(params[:id])
+    @user = User.find(params[:attendance][:user_id])
+    @attendance = @user.attendances.find(params[:attendance][:id])
+    # binding.pry
+    if params[:attendance][:scheduled_end_time].blank? || params[:attendance][:instructor_test].blank?
+      flash[:warning] = "必須箇所が空欄です。"
+      redirect_to @user
+    else
+      @attendance.update_attributes(overtime_params)
+      flash[:success] = "残業申請が完了しました。"
+      redirect_to @user and return
+    end
+  end
+  
+  
+  <!-- users/show.html.erb の一部 -->
+<td><%= f.time_field :scheduled_end_time, class: 'form-control' %> </td>
+<td><%= f.select :instructor_test, [@superior], :include_blank => true %></td>

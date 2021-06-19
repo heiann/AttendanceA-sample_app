@@ -4,15 +4,17 @@
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">×</span>
       </button>
-      <h1 class="modal-title">残業申請</h1>
+       <h1 class="modal-title">残業申請</h1>
     </div>
     <div class="modal-body">
       <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-          <%= form_with(model: @user, url: update_overwork_approval_user_path(@user), local: true, method: :patch) do |f| %>
-            <%= f.hidden_field :id, :value => @attendance %>
-             <table class = "table table-bordered table-condensed table-striped  table-overwork_approval">
-        　　     <thead>
+       <div class="col-md-10 col-md-offset-1">
+      
+            <%= form_with(model: @user, url: update_overwork_approval_user_path(@user), local: true, method: :patch) do |f| %>
+             
+               
+               <table class = "table table-bordered table-condensed table-striped  table-overwork_approval">
+        　　       <thead>
                   <tr>
                     <th>日付</th>
                     <th>曜日</th>
@@ -25,18 +27,18 @@
                       </div>
                     </th>
                   </tr>
-               </thead>
-               <tbody>
-                <% @attendances.each do |day| %>
+                 </thead>
+               <tbody> 
+                 <%= f.hidden_field :id, :value => @attendance %>
                   <tr>
-                    <td><%= l(day.worked_on, format: :short) %></td>
-                    <td><%= $days_of_the_week[day.worked_on.wday] %></td>
+                    <td><%= select_date(session[:currentdate],:use_month_numbers => true) %></td>
+                    <td><%= "#" %></td>
                     <td><%= f.time_field :overwork_end, class: "form-control" %></td>
                     <td><%= f.check_box(:next_day, { :checked => false  }) %></td>
                     <td><%= f.text_field :overwork_memo, class: "form-control" %></td>
                     <td><%= f.select :superior, [["superior", "superior"],["管理者", "管理者"],["上長A", "上長A"],["上長B", "上長B"]],:include_blank => true ,class:"form-control" %></td>
                   </tr>
-                <% end %>
+               
                </tbody>
             </table>
               <div type = margin-top: 10px></div> 

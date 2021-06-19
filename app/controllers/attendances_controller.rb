@@ -67,6 +67,28 @@ class AttendancesController < ApplicationController
     flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end
+  
+  def edit_overwork_approval
+  end
+   # 一日分の残業申請
+  # users/show.html.erbのhidden_fieldのパラメータ取得
+  def update_overwork_approval
+     # 取得できるものは以下と同じ @user = User.find(params[:id])
+    @user = User.find(params[:attendance][:user_id])
+    @attendance = @user.attendances.find(params[:attendance][:id])
+    # binding.pry
+    if params[:attendance][:overwork_end].blank? || params[:attendance][:instructor_test].blank?
+      flash[:warning] = "必須箇所が空欄です。"
+      redirect_to @user
+    else
+      @attendance.update_attributes(overtime_params)
+      flash[:success] = "残業申請が完了しました。"
+      redirect_to @user and return
+    end
+  end
+
+  
+  
     
    # 管理権限者、または現在ログインしているユーザーを許可します。
     def admin_or_correct_user
